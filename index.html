@@ -12,78 +12,88 @@
 </head>
 
 <body>
-    <section class="sidebar">
-        <div class="sidebar-wr">
-            <div class="sidebar__logo">
-                <img src="./imgs/logomark.svg" alt="logo">
-                <div>Habbit</div>
-            </div>
-            <div class="sidebar__menu">
-                <div class="sidebar__button">
-                    <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
+    <div class="wraper">
+        <section class="sidebar">
+            <div class="sidebar-wr">
+                <div class="sidebar__logo">
+                    <img src="./imgs/logomark.svg" alt="logo">
+                    <div>Habbit</div>
                 </div>
-                <div class="sidebar__button">
-                    <img src="./imgs/water.svg" alt="water icon">
-                </div>
-                <div class="sidebar__button">
-                    <img src="./imgs/food.svg" alt="food icon">
-                </div>
-                <div class="sidebar__button sidebar__button_new">
-                    <img src="./imgs/add.svg" alt="add icon">
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="content">
-        <div class="content-wr">
-            <div class="content__head">
-                <div class="content__name">Отжимания</div>
-                <div class="content__progressBar">
-                    <div class="progressBar__top">
-                        <div class="progressBar__title">Прогресс</div>
-                        <div class="progressBar__percent">80%</div>
+                <div class="sidebar__menu">
+                    <div class="sidebar__nav sidebar__menu">
+                        <button class="sidebar__button sidebar__button_active">
+                            <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
+                        </button>
+                        <button class="sidebar__button">
+                            <img src="./imgs/water.svg" alt="water icon">
+                        </button>
+                        <button class="sidebar__button">
+                            <img src="./imgs/food.svg" alt="food icon">
+                        </button>
                     </div>
-                    <div class="progressBar__bottom">
-                        <div class="progressBar__progress"></div>
-                    </div>
-
+                    <button class="sidebar__button sidebar__button_new">
+                        <img src="./imgs/add.svg" alt="add icon">
+                    </button>
                 </div>
             </div>
-            <div class="content__body">
-                <div class="content__dayDone content__day">
-                    <div class="content__dayName">День 1</div>
-                    <div class="content__dayBody">
-                        <div class="content__dayText">Первый подход всегда даётся тяжело</div>
-                        <div class="content__dayRemoveIcon">
-                            <img src="./imgs/delete.svg" alt="delete icon">
+        </section>
+        <section class="content">
+            <div class="content-wr">
+                <div class="content__head">
+                    <div class="content__name">Отжимания</div>
+                    <div class="content__progressBar">
+                        <div class="progressBar__top">
+                            <div class="progressBar__title">Прогресс</div>
+                            <div class="progressBar__percent">80%</div>
+                        </div>
+                        <div class="progressBar__bar">
+                            <div class="progressBar__coverBar"></div>
                         </div>
                     </div>
                 </div>
-                <div class="content__dayNew content__day">
-                    <div class="content__dayName">День 2</div>
-                    <div class="content__dayBody content__dayNewBody">
-                        <form action="">
+                <div class="content__body">
+                    <div class="content__dayDone">
+                        <div class="content__day">
+                            <div class="content__dayName">День 1</div>
+                            <div class="content__dayBody">
+                                <div class="content__dayText">Первый подход всегда даётся тяжело</div>
+                                <button class="content__dayRemoveIcon">
+                                    <img src="./imgs/delete.svg" alt="delete icon">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content__dayNew content__day">
+                        <div class="content__dayName">День 2</div>
+                        <form name="comm" class="content__dayBody content__dayNewBody" action="">
                             <input class="content__input" type="text" placeholder="Комментарий">
                             <button class="content__btnReady">Готово</button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
     <section class="popUp">
         <div class="popUp-wr">
-            <img class="popUp__closeIcon" src="./imgs/cross.svg" alt="cross icon">
+            <div class="popUp__closeIcon-wr"><img class="popUp__closeIcon" src="./imgs/cross.svg" alt="cross icon">
+            </div>
             <div class="popUp__title">Новая привычка</div>
-            <div class="popUp__icon">Иконка</div>
+            <div class="popUp__subTitle">Иконка</div>
             <div class="popUp__icons">
-                <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
-                <img src="./imgs/water.svg" alt="water icon">
-                <img src="./imgs/food.svg" alt="food icon">
+                <button class="popUp__icon">
+                    <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
+                </button>
+                <button class="popUp__icon">
+                    <img src="./imgs/water.svg" alt="water icon">
+                </button>
+                <button class="popUp__icon">
+                    <img src="./imgs/food.svg" alt="food icon">
+                </button>
             </div>
             <form action="" class="popUp__form">
-                <input type="text" class="popUp__name">
-                <input type="text" class="popUp__aim">
+                <input type="text" class="popUp__name popUp__input" placeholder="Название">
+                <input type="text" class="popUp__aim popUp__input" placeholder="Цель">
                 <button class="popUp__btnAdd">Добавить</button>
             </form>
         </div>
