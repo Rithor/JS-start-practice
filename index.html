@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="icon" href="./imgs/favicon.ico">
     <title>Habbit</title>
 </head>
 
@@ -21,15 +22,6 @@
                 </div>
                 <div class="sidebar__menu">
                     <div class="sidebar__nav sidebar__menu">
-                        <button class="sidebar__button sidebar__button_active">
-                            <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
-                        </button>
-                        <button class="sidebar__button">
-                            <img src="./imgs/water.svg" alt="water icon">
-                        </button>
-                        <button class="sidebar__button">
-                            <img src="./imgs/food.svg" alt="food icon">
-                        </button>
                     </div>
                     <button class="sidebar__button sidebar__button_new">
                         <img src="./imgs/add.svg" alt="add icon">
@@ -65,8 +57,8 @@
                     </div>
                     <div class="content__dayNew content__day">
                         <div class="content__dayName">День 2</div>
-                        <form name="comm" class="content__dayBody content__dayNewBody" action="">
-                            <input class="content__input" type="text" placeholder="Комментарий">
+                        <form class="content__dayBody content__dayNewBody" action="" autocomplete="off">
+                            <input class="content__input" type="text" placeholder="Комментарий" name="comm">
                             <button class="content__btnReady">Готово</button>
                         </form>
                     </div>
@@ -76,8 +68,7 @@
     </div>
     <section class="popUp">
         <div class="popUp-wr">
-            <div class="popUp__closeIcon-wr"><img class="popUp__closeIcon" src="./imgs/cross.svg" alt="cross icon">
-            </div>
+            <img class="popUp__closeIcon" src="./imgs/cross.svg" alt="cross icon">
             <div class="popUp__title">Новая привычка</div>
             <div class="popUp__subTitle">Иконка</div>
             <div class="popUp__icons">
@@ -91,9 +82,9 @@
                     <img src="./imgs/food.svg" alt="food icon">
                 </button>
             </div>
-            <form action="" class="popUp__form">
-                <input type="text" class="popUp__name popUp__input" placeholder="Название">
-                <input type="text" class="popUp__aim popUp__input" placeholder="Цель">
+            <form action="" class="popUp__form" autocomplete="off">
+                <input type="text" class="popUp__name popUp__input" placeholder="Название" name="name">
+                <input type="text" class="popUp__aim popUp__input" placeholder="Цель" name="purpose">
                 <button class="popUp__btnAdd">Добавить</button>
             </form>
         </div>
