@@ -22,8 +22,9 @@
                 </div>
                 <div class="sidebar__menu">
                     <div class="sidebar__nav sidebar__menu">
+                        <!-- menu with habbits icons -->
                     </div>
-                    <button class="sidebar__button sidebar__button_new">
+                    <button class="sidebar__button sidebar__button_new" onclick="togglePopUp()">
                         <img src="./imgs/add.svg" alt="add icon">
                     </button>
                 </div>
@@ -45,7 +46,7 @@
                 </div>
                 <div class="content__body">
                     <div class="content__dayDone content__body">
-
+                        <!-- list of days with comments -->
                     </div>
                     <div class="content__newDay content__day">
                         <div class="content__dayName content__newDayName">День X</div>
@@ -54,29 +55,33 @@
                             <button class="content__btnReady" type="submit">Готово</button>
                         </form>
                     </div>
+                    <button class="content__btnReady" onclick="removeHabbit(event)">Удалить привычку</button>
                 </div>
             </div>
         </section>
     </div>
-    <section class="popUp">
+    <section class="popUp popUp_hidden">
         <div class="popUp-wr">
-            <img class="popUp__closeIcon" src="./imgs/cross.svg" alt="cross icon">
+            <button class="popUp__closeIcon" onclick="togglePopUp()">
+                <img src="./imgs/cross.svg" alt="cross icon">
+            </button>
             <div class="popUp__title">Новая привычка</div>
             <div class="popUp__subTitle">Иконка</div>
             <div class="popUp__icons">
-                <button class="popUp__icon">
+                <button class="popUp__icon popUp__icon_active" onclick="setIcon(this, 'dumbbell')">
                     <img src="./imgs/dumbbell.svg" alt="dumbbell icon">
                 </button>
-                <button class="popUp__icon">
+                <button class="popUp__icon" onclick="setIcon(this, 'water')">
                     <img src="./imgs/water.svg" alt="water icon">
                 </button>
-                <button class="popUp__icon">
+                <button class="popUp__icon" onclick="setIcon(this, 'food')">
                     <img src="./imgs/food.svg" alt="food icon">
                 </button>
             </div>
-            <form action="" class="popUp__form" autocomplete="off">
+            <form class="popUp__form" onsubmit="addHabbit(event)" autocomplete="off">
+                <input hidden class="setIcon" type="text" name="icon" value="dumbbell">
                 <input type="text" class="popUp__name popUp__input" placeholder="Название" name="name">
-                <input type="text" class="popUp__aim popUp__input" placeholder="Цель" name="purpose">
+                <input type="number" class="popUp__target popUp__input" placeholder="Цель" name="target">
                 <button class="popUp__btnAdd">Добавить</button>
             </form>
         </div>

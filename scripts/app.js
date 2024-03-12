@@ -17,6 +17,10 @@ const page = {
         dayDone: document.querySelector('.content__dayDone'),
         newDayName: document.querySelector('.content__newDayName'),
     },
+    popUp: {
+        nameInput: document.querySelector('.popUp__name'),
+        targetInput: document.querySelector('.popUp__target'),
+    },
 };
 
 // utils ------------------------------------------------------------------------------------------------
@@ -41,16 +45,7 @@ function setActive(activeHabbit) {
 
 function renderData(activeHabbit) {
     globalActivHabbit = activeHabbit;
-    for (const habbit of habbits) {
-        // rednder sideBar
-        if (!document.querySelector(`[habbit-id="${habbit.id}"]`)) {
-            renderSideBar(habbit);
-            // set active habbit
-            if (activeHabbit?.id === habbit.id) {
-                document.querySelector(`[habbit-id="${habbit.id}"]`).classList.add('sidebar__button_active');
-            }
-        }
-    }
+    renderSideBar(activeHabbit);
     renderContentHead(activeHabbit);
     renderContentBody(activeHabbit);
 };
@@ -62,23 +57,48 @@ function calcPercent(activeHabbit) {
     return percent;
 };
 
+function togglePopUp() {
+    checkPopUpInput()
+    document.querySelector('.popUp').classList.toggle('popUp_hidden');
+};
+
+function validateAndGetFormData(form, fields) {
+    const formData = new FormData(form);
+    const res = {};
+    for (const field of fields) {
+        const fieldValue = formData.get(field);
+        form[field].classList.remove('input_error');
+        if (!fieldValue) {
+            form[field].classList.add('input_error');
+        }
+        res[field] = fieldValue;
+    }
+    let isValid = true;
+    for (const field of fields) {
+        if (!res[field]) {
+            isValid = false;
+        }
+    }
+    if (!isValid) {
+        return;
+    }
+    return res;
+}
+
 // work with days ------------------------------------------------------------------------------------------------
 function addDay(event) {
-    const form = event.target; // ссылка на объект, который был инициатором события
+    event.preventDefault();
 
-    event.preventDefault(); // предотвращает повидение по умолчанию
-
-    const data = new FormData(form); // создаёт новые объект FormData, если проще - HTML-форму. (form) Существующая HTML-форма, на основе которой будет создана новая. Если ничего не указано, будет создана пустая форма.
-
-    const comment = data.get('comm'); // Возвращает первое значение ассоциированное с переданным ключом из объекта FormData. Тут это значение value поля input с атрибутом name="comm"
-
-    form['comm'].classList.remove('content__input_error'); // form['comm'] тоже самое что querySelector("input[name=comm]") или querySelector(".content__input")
-
-    form.addEventListener('keydown', () => form['comm'].classList.remove('content__input_error'));
+    const form = event.target;
+    const data = new FormData(form);
+    const comment = data.get('comm');
+    form['comm'].classList.remove('input_error');
+    form.addEventListener('keydown', () => form['comm'].classList.remove('input_error'));
     if (!comment) {
-        form['comm'].classList.add('content__input_error');
+        form['comm'].classList.add('input_error');
         return;
     };
+
     habbits.map(habbit => {
         if (habbit.id === globalActivHabbit.id) {
             habbit.days.push({ comment: `${comment}` });
@@ -95,14 +115,100 @@ function removeDay(index) {
     saveData();
 };
 
+// work with habbits ------------------------------------------------------------------------------------------------
+function setIcon(context, icon) {
+    document.querySelector('.setIcon').value = icon;
+    document.querySelector('.popUp__icon.popUp__icon_active').classList.remove('popUp__icon_active');
+    context.classList.add('popUp__icon_active');
+};
+
+function addHabbit(event) {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const name = data.get('name');
+    const target = data.get('target');
+
+    checkPopUpInput(name, target);
+    if (!validPopUpInput(name, target)) {
+        return;
+    };
+
+    habbits.push(getNewHabbit(data));
+    saveData();
+    renderData(habbits[habbits.length - 1]);
+    togglePopUp();
+};
+
+function checkPopUpInput(nameValue, targetValue) {
+    page.popUp.nameInput.value = nameValue ? nameValue : '';
+    page.popUp.targetInput.value = targetValue ? targetValue : '';
+    page.popUp.nameInput.classList.remove('input_error');
+    page.popUp.targetInput.classList.remove('input_error');
+};
+
+function validPopUpInput(nameValue, targetValue) {
+    page.popUp.nameInput.addEventListener('keydown', checkPopUpInput(nameValue, targetValue));
+    if (!nameValue) {
+        page.popUp.nameInput.classList.add('input_error');
+        return false;
+    };
+    if (!targetValue) {
+        page.popUp.targetInput.classList.add('input_error');
+        return false;
+    };
+    return true;
+};
+
+function getNewHabbit(data) {
+    const newHabbit = {
+        id: (habbits.reduce((maxId, habbit) => {
+            if (maxId < habbit.id) {
+                maxId = habbit.id
+            }
+            return maxId;
+        }, 0)) + 1,
+        icon: data.get('icon'),
+        name: data.get('name'),
+        target: data.get('target'),
+        days: [],
+    };
+    console.log(newHabbit.id);
+    return newHabbit;
+};
+
+function removeHabbit(event) {
+    for (const index in habbits) {
+        if (habbits[index].id === globalActivHabbit.id) {
+            habbits.splice(index, 1);
+        };
+    };
+    saveData();
+    page.sidebarNav.innerHTML = '';
+    renderData(habbits[0]);
+};
+
 // render ------------------------------------------------------------------------------------------------
-function renderSideBar(habbit) {
+function renderSideBarItem(habbit) {
     const sidebarButton = document.createElement('button');
     sidebarButton.setAttribute('habbit-id', habbit.id);
     sidebarButton.classList.add('sidebar__button');
     sidebarButton.innerHTML = `<img src="./imgs/${habbit.icon}.svg" alt="${habbit.icon} icon">`;
     page.sidebarNav.appendChild(sidebarButton);
     sidebarButton.addEventListener('click', () => setActive(habbit));
+};
+
+function renderSideBar(activeHabbit) {
+    for (const habbit of habbits) {
+        document.querySelector(`[habbit-id="${habbit.id}"]`)?.classList.remove('sidebar__button_active');
+        if (!document.querySelector(`[habbit-id="${habbit.id}"]`)) {
+            renderSideBarItem(habbit);
+        }
+        // set active habbit
+        if (activeHabbit?.id === habbit.id) {
+            document.querySelector(`[habbit-id="${habbit.id}"]`).classList.add('sidebar__button_active');
+        }
+    }
 };
 
 function renderContentHead(activeHabbit) {

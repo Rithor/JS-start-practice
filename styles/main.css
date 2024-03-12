@@ -31,6 +31,12 @@ input {
     font-family: "Comfortaa", sans-serif;
 }
 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 .wraper {
     display: flex;
 }
@@ -253,10 +259,6 @@ input {
     color: var(--color-txt-plh);
 }
 
-.content__input_error {
-    border: red solid 1px;
-}
-
 .content__btnReady {
     padding: 12px 33px;
     border: none;
@@ -282,18 +284,15 @@ input {
 ------------------------------------------------------------------------------------------------*/
 
 .popUp {
-
-    display: none;
-
-    box-shadow: 0 8px 14px 12px rgba(56, 56, 56, 0.05);
-    background: #fff;
-    border-radius: 10px;
-    width: 424px;
-    height: 338px;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .popUp_hidden {
@@ -306,13 +305,20 @@ input {
     flex-flow: column;
     align-items: center;
     padding: 20px;
+    max-width: 500px;
+    width: 80%;
+    box-shadow: 0 8px 14px 12px rgba(56, 56, 56, 0.05);
+    background: #fff;
+    border-radius: 10px;
 }
 
 .popUp__closeIcon {
     position: absolute;
-    left: 92%;
-    top: 5%;
+    right: 15px;
+    top: 15px;
     cursor: pointer;
+    border: none;
+    background: none;
 }
 
 .popUp__closeIcon:hover {
@@ -321,12 +327,13 @@ input {
 
 .popUp__closeIcon:active {
     filter: brightness(20%);
-    top: 5.5%;
+    top: 16px;
+    right: 14px;
 }
 
 .popUp__title {
     font-size: calc(24em / var(--default-font-size));
-    margin-bottom: 19px;
+    margin: 0 0 19px;
 }
 
 .popUp__subTitle {
@@ -349,6 +356,14 @@ input {
     width: 45px;
     cursor: pointer;
     background: none;
+}
+
+.popUp__icon_active {
+    background-color: var(--color-prime);
+}
+
+.popUp__icon_active img {
+    filter: brightness(0) invert(1);
 }
 
 .popUp__icon:hover {
@@ -389,7 +404,7 @@ input {
     margin-bottom: 6px;
 }
 
-.popUp__aim {
+.popUp__target {
     margin-bottom: 17px;
 }
 
@@ -416,4 +431,9 @@ input {
 .popUp__btnAdd:active {
     transform: translate(1px, 2px);
     background: var(--color-prime);
+}
+
+
+.input_error {
+    border: red solid 1px;
 }
