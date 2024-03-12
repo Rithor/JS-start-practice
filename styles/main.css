@@ -33,7 +33,6 @@ input {
 
 .wraper {
     display: flex;
-    height: 100vh;
 }
 
 
@@ -113,6 +112,7 @@ input {
 .content {
     background-color: var(--color-bg-body);
     flex: 1 1 100%;
+    min-height: 100vh;
 }
 
 .content-wr {
@@ -157,15 +157,18 @@ input {
 }
 
 .progressBar__bar {
+    position: relative;
     background: #e6e9ed;
     border-radius: 4px;
 }
 
 .progressBar__coverBar {
+    transition: all 0.5s;
     background: #5051f9;
+    position: relative;
     border-radius: 4px;
     height: 5px;
-    width: 10%;
+    width: 0%;
 }
 
 /* content body 
@@ -226,7 +229,7 @@ input {
     filter: brightness(20%);
 }
 
-.content__dayNewBody {
+.content__newDayBody {
     display: flex;
     gap: 14px;
 }
@@ -248,6 +251,10 @@ input {
 
 .content__input::placeholder {
     color: var(--color-txt-plh);
+}
+
+.content__input_error {
+    border: red solid 1px;
 }
 
 .content__btnReady {

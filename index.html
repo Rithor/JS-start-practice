@@ -32,11 +32,11 @@
         <section class="content">
             <div class="content-wr">
                 <div class="content__head">
-                    <div class="content__name">Отжимания</div>
+                    <div class="content__name">-</div>
                     <div class="content__progressBar">
                         <div class="progressBar__top">
                             <div class="progressBar__title">Прогресс</div>
-                            <div class="progressBar__percent">80%</div>
+                            <div class="progressBar__percent">%</div>
                         </div>
                         <div class="progressBar__bar">
                             <div class="progressBar__coverBar"></div>
@@ -44,22 +44,14 @@
                     </div>
                 </div>
                 <div class="content__body">
-                    <div class="content__dayDone">
-                        <div class="content__day">
-                            <div class="content__dayName">День 1</div>
-                            <div class="content__dayBody">
-                                <div class="content__dayText">Первый подход всегда даётся тяжело</div>
-                                <button class="content__dayRemoveIcon">
-                                    <img src="./imgs/delete.svg" alt="delete icon">
-                                </button>
-                            </div>
-                        </div>
+                    <div class="content__dayDone content__body">
+
                     </div>
-                    <div class="content__dayNew content__day">
-                        <div class="content__dayName">День 2</div>
-                        <form class="content__dayBody content__dayNewBody" action="" autocomplete="off">
+                    <div class="content__newDay content__day">
+                        <div class="content__dayName content__newDayName">День X</div>
+                        <form class="content__dayBody content__newDayBody" onsubmit="addDay(event)" autocomplete="off">
                             <input class="content__input" type="text" placeholder="Комментарий" name="comm">
-                            <button class="content__btnReady">Готово</button>
+                            <button class="content__btnReady" type="submit">Готово</button>
                         </form>
                     </div>
                 </div>
