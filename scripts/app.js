@@ -4,7 +4,7 @@
 let habbits = [];
 let globalActivHabbit;
 const HABBIT_KEY = 'HABBIT_KEY';
-// const HABBIT_KEY_EX = 'HABBIT_KEY_EX';
+const HABBIT_KEY_EX = 'HABBIT_KEY_EX';
 
 // page ------------------------------------------------------------------------------------------------
 const page = {
@@ -18,6 +18,7 @@ const page = {
         dayDone: document.querySelector('.content__dayDone'),
         newDayName: document.querySelector('.content__newDayName'),
         newDayComm: document.querySelector('.content__input'),
+        removeDayBtn: document.querySelector('.removeHabbitBtn'),
     },
     popUp: {
         nameInput: document.querySelector('.popUp__name'),
@@ -51,12 +52,25 @@ function setActive(activeHabbit) {
 
 function renderData(activeHabbit) {
     if (!activeHabbit) {
+        showExPage();
         return;
     }
+
+    document.location.replace(document.location.pathname + '#' + activeHabbit.id);
     globalActivHabbit = activeHabbit;
     renderSideBar(activeHabbit);
     renderContentHead(activeHabbit);
     renderContentBody(activeHabbit);
+};
+
+function initRenderData() {
+    const hashId = +document.location.hash.replace('#', '');
+    const hashHabbit = habbits.find(habbit => habbit.id === hashId);
+    if (hashId && hashHabbit) {
+        renderData(hashHabbit);
+    } else {
+        renderData(habbits[0]);
+    }
 };
 
 function calcPercent(activeHabbit) {
@@ -148,6 +162,7 @@ function addHabbit(event) {
     resetForm(event.target, ['name', 'target']);
     saveData();
     renderData(habbits[habbits.length - 1]);
+    page.contentBody.removeDayBtn.style.display = "block";
     togglePopUp();
 };
 
@@ -167,7 +182,7 @@ function getNewHabbit(data) {
     return newHabbit;
 };
 
-function removeHabbit(event) {
+function removeHabbit() {
     for (const index in habbits) {
         if (habbits[index].id === globalActivHabbit.id) {
             habbits.splice(index, 1);
@@ -233,9 +248,21 @@ function renderContentBody(activeHabbit) {
     page.contentBody.newDayName.innerText = `День ${activeHabbit.days.length + 1}`;
 };
 
+function showExPage() {
+    // нужна проверка
+    const habbitsArr = JSON.parse(localStorage.getItem(HABBIT_KEY_EX));
+    if (habbitsArr.length === 0) {
+        return false;
+    }
+    if (Array.isArray(habbitsArr)) {
+        habbits = habbitsArr;
+    }
+    renderData(habbits[0]);
+    page.contentBody.removeDayBtn.style.display = 'none';
+};
+
 // init ------------------------------------------------------------------------------------------------
 (() => {
-    if (loadData()) {
-        renderData(habbits[0]);
-    };
+    loadData();
+    initRenderData();
 })();
