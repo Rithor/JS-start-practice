@@ -4,6 +4,7 @@
 let habbits = [];
 let globalActivHabbit;
 const HABBIT_KEY = 'HABBIT_KEY';
+// const HABBIT_KEY_EX = 'HABBIT_KEY_EX';
 
 // page ------------------------------------------------------------------------------------------------
 const page = {
@@ -16,6 +17,7 @@ const page = {
     contentBody: {
         dayDone: document.querySelector('.content__dayDone'),
         newDayName: document.querySelector('.content__newDayName'),
+        newDayComm: document.querySelector('.content__input'),
     },
     popUp: {
         nameInput: document.querySelector('.popUp__name'),
@@ -28,9 +30,13 @@ function loadData() {
     const habbitsString = localStorage.getItem(HABBIT_KEY);
     // нужна проверка
     const habbitsArr = JSON.parse(habbitsString);
+    if (habbitsArr.length === 0) {
+        return false;
+    }
     if (Array.isArray(habbitsArr)) {
         habbits = habbitsArr;
     }
+    return true;
 };
 
 function saveData() {
@@ -44,6 +50,9 @@ function setActive(activeHabbit) {
 };
 
 function renderData(activeHabbit) {
+    if (!activeHabbit) {
+        return;
+    }
     globalActivHabbit = activeHabbit;
     renderSideBar(activeHabbit);
     renderContentHead(activeHabbit);
@@ -58,7 +67,8 @@ function calcPercent(activeHabbit) {
 };
 
 function togglePopUp() {
-    checkPopUpInput()
+    page.popUp.nameInput.value = '';
+    page.popUp.targetInput.value = '';
     document.querySelector('.popUp').classList.toggle('popUp_hidden');
 };
 
@@ -66,6 +76,7 @@ function validateAndGetFormData(form, fields) {
     const formData = new FormData(form);
     const res = {};
     for (const field of fields) {
+        form.addEventListener('keydown', () => form[field].classList.remove('input_error'));
         const fieldValue = formData.get(field);
         form[field].classList.remove('input_error');
         if (!fieldValue) {
@@ -73,6 +84,7 @@ function validateAndGetFormData(form, fields) {
         }
         res[field] = fieldValue;
     }
+
     let isValid = true;
     for (const field of fields) {
         if (!res[field]) {
@@ -83,28 +95,30 @@ function validateAndGetFormData(form, fields) {
         return;
     }
     return res;
-}
+};
+
+function resetForm(form, fields) {
+    for (const field of fields) {
+        form[field].value = '';
+    }
+};
 
 // work with days ------------------------------------------------------------------------------------------------
 function addDay(event) {
     event.preventDefault();
 
-    const form = event.target;
-    const data = new FormData(form);
-    const comment = data.get('comm');
-    form['comm'].classList.remove('input_error');
-    form.addEventListener('keydown', () => form['comm'].classList.remove('input_error'));
-    if (!comment) {
-        form['comm'].classList.add('input_error');
+    const data = validateAndGetFormData(event.target, ['comm']);
+    if (!data) {
         return;
-    };
+    }
 
     habbits.map(habbit => {
         if (habbit.id === globalActivHabbit.id) {
-            habbit.days.push({ comment: `${comment}` });
+            habbit.days.push({ comment: data.comm });
         }
     });
-    form['comm'].value = '';
+
+    resetForm(event.target, ['comm']);
     renderData(globalActivHabbit);
     saveData();
 };
@@ -125,39 +139,16 @@ function setIcon(context, icon) {
 function addHabbit(event) {
     event.preventDefault();
 
-    const data = new FormData(event.target);
-    const name = data.get('name');
-    const target = data.get('target');
-
-    checkPopUpInput(name, target);
-    if (!validPopUpInput(name, target)) {
+    const data = validateAndGetFormData(event.target, ['name', 'icon', 'target']);
+    if (!data) {
         return;
-    };
+    }
 
     habbits.push(getNewHabbit(data));
+    resetForm(event.target, ['name', 'target']);
     saveData();
     renderData(habbits[habbits.length - 1]);
     togglePopUp();
-};
-
-function checkPopUpInput(nameValue, targetValue) {
-    page.popUp.nameInput.value = nameValue ? nameValue : '';
-    page.popUp.targetInput.value = targetValue ? targetValue : '';
-    page.popUp.nameInput.classList.remove('input_error');
-    page.popUp.targetInput.classList.remove('input_error');
-};
-
-function validPopUpInput(nameValue, targetValue) {
-    page.popUp.nameInput.addEventListener('keydown', checkPopUpInput(nameValue, targetValue));
-    if (!nameValue) {
-        page.popUp.nameInput.classList.add('input_error');
-        return false;
-    };
-    if (!targetValue) {
-        page.popUp.targetInput.classList.add('input_error');
-        return false;
-    };
-    return true;
 };
 
 function getNewHabbit(data) {
@@ -168,12 +159,11 @@ function getNewHabbit(data) {
             }
             return maxId;
         }, 0)) + 1,
-        icon: data.get('icon'),
-        name: data.get('name'),
-        target: data.get('target'),
+        icon: data.icon,
+        name: data.name,
+        target: data.target,
         days: [],
     };
-    console.log(newHabbit.id);
     return newHabbit;
 };
 
@@ -185,7 +175,7 @@ function removeHabbit(event) {
     };
     saveData();
     page.sidebarNav.innerHTML = '';
-    renderData(habbits[0]);
+    renderData(habbits[habbits.length - 1]);
 };
 
 // render ------------------------------------------------------------------------------------------------
@@ -220,6 +210,7 @@ function renderContentHead(activeHabbit) {
 
 function renderContentBody(activeHabbit) {
     page.contentBody.dayDone.innerHTML = '';
+    page.contentBody.newDayComm.value = '';
 
     activeHabbit.days.forEach((day, index) => {
 
@@ -244,7 +235,7 @@ function renderContentBody(activeHabbit) {
 
 // init ------------------------------------------------------------------------------------------------
 (() => {
-    loadData();
-    renderData(habbits[0]);
+    if (loadData()) {
+        renderData(habbits[0]);
+    };
 })();
-
