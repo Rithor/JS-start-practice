@@ -8,7 +8,7 @@ const HABBIT_KEY_EX = 'HABBIT_KEY_EX';
 
 // page ------------------------------------------------------------------------------------------------
 const page = {
-    sidebarNav: document.querySelector('.sidebar__nav'),
+    sidebarMenu: document.querySelector('.sidebar__menu'),
     contentHead: {
         title: document.querySelector('.content__name'),
         progresPercent: document.querySelector('.progressBar__percent'),
@@ -189,7 +189,7 @@ function removeHabbit() {
         };
     };
     saveData();
-    page.sidebarNav.innerHTML = '';
+    page.sidebarMenu.innerHTML = '';
     renderData(habbits[habbits.length - 1]);
 };
 
@@ -199,7 +199,7 @@ function renderSideBarItem(habbit) {
     sidebarButton.setAttribute('habbit-id', habbit.id);
     sidebarButton.classList.add('sidebar__button');
     sidebarButton.innerHTML = `<img src="./imgs/${habbit.icon}.svg" alt="${habbit.icon} icon">`;
-    page.sidebarNav.appendChild(sidebarButton);
+    page.sidebarMenu.appendChild(sidebarButton);
     sidebarButton.addEventListener('click', () => setActive(habbit));
 };
 
